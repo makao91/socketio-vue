@@ -12,6 +12,20 @@ class SocketioService {
             this.socket.disconnect();
         }
     }
+    emitLeave(username) {
+        this.socket.emit('leave', username);
+    }
+    listenChatMessage() {
+        let messages;
+        this.socket.on('chat-message', (data) => {
+            messages.push({
+                message: data.message,
+                type: 1,
+                user: data.user,
+            });
+        });
+            return messages;
+    }
 }
 
 export default new SocketioService();

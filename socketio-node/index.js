@@ -12,8 +12,30 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.emit('connections', io.engine.clientsCount);
+
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log("A user disconnected");
+    });
+
+    socket.on('chat-message', (data) => {
+        socket.broadcast.emit('chat-message', (data));
+    });
+
+    socket.on('typing', (data) => {
+        socket.broadcast.emit('typing', (data));
+    });
+
+    socket.on('stopTyping', () => {
+        socket.broadcast.emit('stopTyping');
+    });
+
+    socket.on('joined', (data) => {
+        socket.broadcast.emit('joined', (data));
+    });
+
+    socket.on('leave', (data) => {
+        socket.broadcast.emit('leave', (data));
     });
 });
 
